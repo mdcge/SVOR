@@ -1,6 +1,6 @@
 from math import sqrt
 from operator import itemgetter
-from random import shuffle
+from random import shuffle, randrange
 from multiprocessing import Pool
 import numpy as np
 
@@ -46,3 +46,21 @@ def parallel_random_search():
                 best = new
                 best_order = new_order
                 print(best, best_order)
+
+def hill_climb(N, order = list(range(1,30))):
+    best = 2121520
+    best_order = [0] + order[:]
+    new_order = best_order[:]
+    for n in range(N):
+        swap_random_pair(new_order)
+        cost = total_wait_time(new_order)
+        if cost < best:
+            best = cost
+            best_order = new_order[:]
+            print('{:6.0f} {}'.format(best, n))
+    return best, best_order
+
+def swap_random_pair(order):
+    L = len(order)
+    a,b = randrange(1,L), randrange(1,L)
+    order[a], order[b] = order[b], order[a]
