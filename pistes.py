@@ -3,6 +3,7 @@ from operator import itemgetter
 from random import shuffle, randrange
 from multiprocessing import Pool
 import numpy as np
+import matplotlib.pyplot as plt
 
 coordinates = []
 
@@ -69,3 +70,10 @@ def swap_random_pair(order):
     L = len(order)
     a,b = randrange(1,L), randrange(1,L)
     order[a], order[b] = order[b], order[a]
+
+
+def show_path(order, coordinates):
+    x, y = np.array(coordinates)[order].T
+    print(x,y)
+    plt.plot(x, y, marker='o')
+    plt.show()
