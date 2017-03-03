@@ -1,5 +1,7 @@
-from random import shuffle
 from math import sqrt
+from operator import itemgetter
+from random import shuffle
+from multiprocessing import Pool
 import numpy as np
 
 coordinates = []
@@ -22,14 +24,25 @@ def distance(a,b):
     dy = ya - yb
     return sqrt(dx*dx + dy*dy)
 
-def random_search():
+def random_search(N):
     best = 212152
     order = list(range(1,30))
-    while True:
+    for _ in range(N):
         shuffle(order)
         full_order = [0] + order
         new = total_wait_time(full_order)
         if new < best:
             best = new
             best_order = full_order
-            print(best, best_order)
+    return best, best_order
+
+def parallel_random_search():
+    best = 212152
+    with Pool(8) as p:
+        jobs = [100000] * 8
+        while True:
+            new, new_order = min(p.map(random_search, jobs), key = itemgetter(0))
+            if new < best:
+                best = new
+                best_order = new_order
+                print(best, best_order)
