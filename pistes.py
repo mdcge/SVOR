@@ -1,3 +1,4 @@
+from random import shuffle
 from math import sqrt
 import numpy as np
 
@@ -20,3 +21,15 @@ def distance(a,b):
     dx = xa - xb
     dy = ya - yb
     return sqrt(dx*dx + dy*dy)
+
+def random_search():
+    best = 212152
+    order = list(range(1,30))
+    while True:
+        shuffle(order)
+        full_order = [0] + order
+        new = total_wait_time(full_order)
+        if new < best:
+            best = new
+            best_order = full_order
+            print(best, best_order)
