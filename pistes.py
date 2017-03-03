@@ -30,16 +30,16 @@ def random_search(N):
     for _ in range(N):
         shuffle(order)
         full_order = [0] + order
-        new = total_wait_time(full_order)
+        new, new_order = hill_climb(full_order)
         if new < best:
             best = new
-            best_order = full_order
+            best_order = new_order
     return best, best_order
 
 def parallel_random_search():
     best = 212152
     with Pool(8) as p:
-        jobs = [100000] * 8
+        jobs = [10] * 8
         while True:
             new, new_order = min(p.map(random_search, jobs), key = itemgetter(0))
             if new < best:
@@ -47,17 +47,22 @@ def parallel_random_search():
                 best_order = new_order
                 print(best, best_order)
 
-def hill_climb(N, order = list(range(1,30))):
+def hill_climb(order):
     best = 2121520
-    best_order = [0] + order[:]
-    new_order = best_order[:]
-    for n in range(N):
-        swap_random_pair(new_order)
-        cost = total_wait_time(new_order)
-        if cost < best:
-            best = cost
-            best_order = new_order[:]
-            print('{:6.0f} {}'.format(best, n))
+    L = len(order)
+    improved = True
+    while improved:
+        improved = False
+        for i in range(1, L):
+            for j in range(i+1, L):
+                new_order = order[:]
+                new_order[i], new_order[j] = new_order[j], new_order[i]
+                cost = total_wait_time(new_order)
+                if cost < best:
+                    improved = True
+                    best = cost
+                    best_order = new_order[:]
+        order = best_order
     return best, best_order
 
 def swap_random_pair(order):
