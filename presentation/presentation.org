@@ -15,6 +15,10 @@
 + Random (edge swap) search
 + This was enough
 * Tools
++ Python
++ Numpy
++ Pytest
++ Pyqtgraph
 * The program
 * Results
 * Demo
