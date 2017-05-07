@@ -1,9 +1,16 @@
 #+TITLE: SVOR Competition
+#+AUTHOR: Max Generowicz
+#+REVEAL_ROOT: file:///home/max/src/reveal.js
+#+OPTIONS: reveal_title_slide:"<h2>%t</h2><h5>%a</h5>" reveal_slide_number:nil toc:nil num:nil
+#+REVEAL_TRANS: slide
 * Problem description
+#+ATTR_REVEAL: :frag (appear)
 + Give link to the problem
 + Describe problem
-+ Show pyqtgraph distribution of points
+** Point distribution
+ + Show pyqtgraph distribution of points
 * Solution outline
+#+ATTR_REVEAL: :frag (appear)
 + Write a computer program
 + Working objective function
 + Random search
@@ -15,6 +22,7 @@
 + Random (edge swap) search
 + This was enough
 * Tools
+#+ATTR_REVEAL: :frag (appear)
 + Python
 + Numpy
 + Pytest
