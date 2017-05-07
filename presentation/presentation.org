@@ -1,6 +1,8 @@
 #+TITLE: SVOR Competition
-* Problem
-* Idea
+* Problem description
++ Give link to the problem
++ Describe problem
++ Show pyqtgraph distribution of points
 * Solution outline
 + Write a computer program
 + Working objective function
