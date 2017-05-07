@@ -1,6 +1,17 @@
 #+TITLE: SVOR Competition
 * Problem
 * Idea
+* Solution outline
++ Write a computer program
++ Working objective function
++ Random search
++ Multiple processors
++ Best neighbour search
++ Local minimum search
++ Random (local minimum) search
++ Edge swap search
++ Random (edge swap) search
++ This was enough
 * Tools
 * The program
 * Results
