@@ -1,0 +1,8 @@
+#+TITLE: SVOR Competition
+* Problem
+* Idea
+* Tools
+* The program
+* Results
+* Demo
+* Available on GitHub
