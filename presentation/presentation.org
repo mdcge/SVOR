@@ -1,8 +1,14 @@
 #+TITLE: SVOR Competition
 #+AUTHOR: Max Generowicz
 #+REVEAL_ROOT: file:///home/max/src/reveal.js
-#+OPTIONS: reveal_title_slide:"<h2>%t</h2><h5>%a</h5>" reveal_slide_number:nil toc:nil num:nil
+#+OPTIONS: reveal_title_slide:"<h2>%t</h2><h5>%a</h5>"
+#+OPTIONS: reveal_slide_number:nil toc:nil num:nil
 #+REVEAL_TRANS: slide
+#+HTML_HEAD: <style>
+#+HTML_HEAD: .reveal h1 {text-transform:none;}
+#+HTML_HEAD: .reveal h2 {text-transform:none;}
+#+HTML_HEAD: .reveal h5 {text-transform:none;}
+#+HTML_HEAD: </style>
 * Problem description
 #+ATTR_REVEAL: :frag (appear)
 + Give link to the problem
