@@ -56,9 +56,20 @@ def hill_climb(order):
         improved = False
         for i in range(1, L):
             for j in range(i+1, L):
-                new_order = order[:]
-                new_order[i], new_order[j] = new_order[j], new_order[i]
-                cost = total_wait_time(new_order)
+                # Swap i and j
+                swap_order = order[:]
+                swap_order[i], swap_order[j] = swap_order[j], swap_order[i]
+                swap_cost = total_wait_time(swap_order)
+                # Reverse between i and j inclusive
+                rev_order = order[:]
+                rev_order[i:j+1] = rev_order[j:i-1:-1]
+                rev_cost = total_wait_time(rev_order)
+                if rev_cost < swap_cost:
+                    cost = rev_cost
+                    new_order = rev_order
+                else:
+                    cost = swap_cost
+                    new_order = swap_order
                 if cost < best:
                     improved = True
                     best = cost
