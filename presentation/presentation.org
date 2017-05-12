@@ -16,7 +16,8 @@
 + Give link to the problem
 + Describe problem
 ** Point distribution
- + Show pyqtgraph distribution of points
+#+ATTR_HTML: :width 75% :height 75%
+[[file:point-distribution.png]]
 * Solution outline
 #+ATTR_REVEAL: :frag (appear)
 + Write a computer program
