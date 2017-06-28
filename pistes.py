@@ -26,6 +26,8 @@ def distance(a,b):
     return sqrt(dx*dx + dy*dy)
 
 def random_search(N):
+    from time import time
+    start = time()
     best = 212152
     order = list(range(1,30))
     for _ in range(N):
@@ -35,7 +37,13 @@ def random_search(N):
         if new < best:
             best = new
             best_order = new_order
+            #print(best, best_order)
+        if best < 70407:
+            return (time() - start)
     return best, best_order
+
+while True:
+    print(random_search(100000))
 
 def parallel_random_search():
     best = 212152
