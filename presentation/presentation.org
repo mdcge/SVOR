@@ -13,9 +13,25 @@
 #+HTML_HEAD: .reveal h5 {text-transform:none;}
 #+HTML_HEAD: </style>
 * Problem description
++ [[http://www.asro.ch/competition2017/ASRO_Competition_2017_en.html][Link to the problem]]
+** 
 #+ATTR_REVEAL: :frag (appear)
-+ Give link to the problem
-+ Describe problem
++ Given a set of ski pistes distributed in 2D, visit all pistes in
+  turn to open them.
++ Cost (per piste) is time spent waiting before piste is opened.
++ Time to arrive is proportional to distance travelled.
++ Minimize total cost.
+
+** 
+#+ATTR_REVEAL: :frag (appear)
++ Variation on Travelling Salesman Problem (TSP)
++ TSP:
+  + closed path
+  + cost is total distance covered
++ Pistes:
+  + open path
+  + cost is cumulative
++ Bias towards shorter paths at the beginning
 ** Point distribution
 #+ATTR_HTML: :width 75% :height 75%
 [[file:point-distribution.png]]
@@ -24,26 +40,48 @@
 + Write a computer program
 + Working objective function
 + Random search
-+ Multiple processors
++ Random search (multiple processors)
 + Best neighbour search
-+ Local minimum search
++ Local minimum (or hill climb) search
 + Random (local minimum) search
-+ Edge swap search
-+ Random (edge swap) search
-+ This was enough
++ Better definition of neighbour
+** Original: [1,2,3,4,5,6,7,8,9,10,11,12]
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:optimal.png]]
+** Neighbour: [1,2,3,4,9,6,7,8,5,10,11,12]
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:neighbour.png]]
+** Original: [1,2,3,4,5,6,7,8,9,10,11,12]
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:optimal.png]]
+** Better neighbour: [1,2,3,4,9,8,7,6,5,10,11,12]
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:neighbour-reverse.png]]
+** Unused ideas
+#+ATTR_REVEAL: :frag (appear)
++ Simulated annealing
++ Didn't need it
 * Tools
 #+ATTR_REVEAL: :frag (appear)
 + Python
 + Numpy
 + Pytest
-+ Pyqtgraph
 * The program
 ** Objective function
 #+ATTR_HTML: :width 120% :height 120%
 #+BEGIN_SRC python
 def objective_function(order):
     coordinates = [positions[n] for n in order]
-    leg_lengths = list(map(distance, coordinates[1:], coordinates[:-1]))
+    leg_lengths = list(map(distance, coordinates[1:  ],
+                                     coordinates[ :-1]))
     return int(floor(sum(np.cumsum(leg_lengths))))
 #+END_SRC
 
@@ -52,6 +90,75 @@ def objective_function(order):
 >>> np.cumsum([1,  2,  3,  4,  5,  6,  7,  8,  9, 10])
         array([1,  3,  6, 10, 15, 21, 28, 36, 45, 55])
 #+END_SRC
+
+** Tests
+The organisers provided an Excel file demonstrating any
+calculation interactively. 
 * Results
-* Demo
+** Model answer
+The pistes in numerical order: =212125=
+** Random search
+149084
+
+141621
+
+134941
+
+(Computation time: a few hours)
+** Hill climb 
+Initial neighbour definition:
+
+126544
+
+118341
+
+(Computation time: a few more hours)
+** Manual optimization
+#+ATTR_REVEAL: :frag (appear)
++ Looked at path of previous best
++ Optimized it by hand
+** 71953
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:~/src/SVOR_competition/hill_03_03d.png]]
+** 70613
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:~/src/SVOR_competition/hand_03_03a.png]]
+** 
+Computer found this whilst I was doing it.
+** 70613
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:~/src/SVOR_competition/hand_03_03a.png]]
+** 70406
+:PROPERTIES:
+:reveal_data_transition: none
+:END:
+[[file:~/src/SVOR_competition/hill_03_03e.png]]
+** Submit as answer
+#+ATTR_REVEAL: :frag (appear)
++ Repeated simulations all gave this answer within minutes.
++ No improvement overnight.
++ Conclusion: this is (likely to be) the optimal answer!
+** Times
+[[file:histogram.png]]
+* Follow up
+** Simulated annealing
+#+ATTR_REVEAL: :frag (appear)
++ Other methods get stuck in local maxima.
++ SA avoids this.
+** Simulated annealing algorithm
+#+ATTR_REVEAL: :frag (appear)
++ Start with a high temperature and a random path.
++ Pick another path randomly.
++ Decide whether to keep it or not.
++ It is possible to keep a path _even though it is
+  worse_ (depending on the temperature).
++ Higher temperature = greater tolerance.
++ Gradually lower the temperature.
++ Stop when temperature = 0.
 * Available on GitHub
