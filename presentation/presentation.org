@@ -172,6 +172,11 @@ Computer found this whilst I was doing it.
 + Higher temperature = greater tolerance.
 + Gradually lower the temperature.
 + Stop when temperature = 0.
+** Problem with SA
+#+ATTR_REVEAL: :frag (appear)
++ SA aims to find *good* solutions quickly.
++ This problem asks for the *best* solution.
++ So SA didn't work well in this context.
 * Available on GitHub
 Slides:
 
