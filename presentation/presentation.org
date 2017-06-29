@@ -157,6 +157,8 @@ Computer found this whilst I was doing it.
 + Conclusion: this is (likely to be) the optimal answer!
 ** Times
 [[file:histogram.png]]
+** Conclusion
+With this technique, the answer can regularly be found in under 3 minutes.
 * Follow up
 ** Simulated annealing
 #+ATTR_REVEAL: :frag (appear)
