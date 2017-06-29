@@ -108,7 +108,7 @@ The pistes in numerical order: =212125=
 134941
 
 (Computation time: a few hours)
-** Hill climb 
+** Random hill climb
 Initial neighbour definition:
 
 126544
@@ -116,6 +116,14 @@ Initial neighbour definition:
 118341
 
 (Computation time: a few more hours)
+** Random hill climb
+Better neighbour definition:
+
+87313
+
+71953
+
+(Computation time: a few minutes)
 ** Manual optimization
 #+ATTR_REVEAL: :frag (appear)
 + Looked at path of previous best
