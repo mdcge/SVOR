@@ -1,7 +1,6 @@
 #+TITLE: SVOR Competition
 #+AUTHOR: Max Generowicz
 #+REVEAL_PLUGINS: (highlight)
-#+REVEAL_ROOT: file:///home/max/src/reveal.js
 #+OPTIONS: reveal_title_slide:"<h2>%t</h2><h5>%a</h5>"
 #+OPTIONS: reveal_slide_number:nil toc:nil num:nil
 #+REVEAL_TRANS: slide
