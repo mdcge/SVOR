@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>SVOR Competition</title>
+<meta name="author" content="(Max Generowicz)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="./reveal.js/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<style>
+.reveal h1 {text-transform:none;}
+.reveal h2 {text-transform:none;}
+.reveal h3 {text-transform:none;}
+.reveal h4 {text-transform:none;}
+.reveal h5 {text-transform:none;}
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h2>SVOR Competition</h2><h5>Max Generowicz</h5>
+</section>
+<section>
+<section id="slide-org24370ec">
+<h2 id="org24370ec">Problem description</h2>
+<ul>
+<li><a href="http://www.asro.ch/competition2017/ASRO_Competition_2017_en.html">Link to the problem</a></li>
+
+</ul>
+</section>
+<section id="slide-org230caf3">
+<h3 id="org230caf3"></h3>
+<ul>
+<li class="fragment appear">Given a set of ski pistes distributed in 2D, visit all pistes in
+turn to open them.</li>
+<li class="fragment appear">Cost (per piste) is time spent waiting before piste is opened.</li>
+<li class="fragment appear">Time to arrive is proportional to distance travelled.</li>
+<li class="fragment appear">Minimize total cost.</li>
+
+</ul>
+
+</section>
+<section id="slide-org7f4e2a5">
+<h3 id="org7f4e2a5"></h3>
+<ul>
+<li class="fragment appear">Variation on Travelling Salesman Problem (TSP)</li>
+<li class="fragment appear">TSP:
+<ul>
+<li>closed path</li>
+<li>cost is total distance covered</li>
+
+</ul></li>
+<li class="fragment appear">Pistes:
+<ul>
+<li>open path</li>
+<li>cost is cumulative</li>
+
+</ul></li>
+<li class="fragment appear">Bias towards shorter paths at the beginning</li>
+
+</ul>
+</section>
+<section id="slide-org668cd45">
+<h3 id="org668cd45">Point distribution</h3>
+
+<div class="figure">
+<p><img src="point-distribution.png" alt="point-distribution.png" width="75%" height="75%" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org0cd51da">
+<h2 id="org0cd51da">Solution outline</h2>
+<ul>
+<li class="fragment appear">Write a computer program</li>
+<li class="fragment appear">Working objective function</li>
+<li class="fragment appear">Random search</li>
+<li class="fragment appear">Random search (multiple processors)</li>
+<li class="fragment appear">Best neighbour search</li>
+<li class="fragment appear">Local minimum (or hill climb) search</li>
+<li class="fragment appear">Random (local minimum) search</li>
+<li class="fragment appear">Better definition of neighbour</li>
+
+</ul>
+</section>
+<section id="slide-org6abd843" data-transition="none">
+<h3 id="org6abd843">Original:</h3>
+<p>
+[1,2,3,4,5,6,7,8,9,10,11,12]
+<img src="optimal.png" alt="optimal.png" />
+</p>
+</section>
+<section id="slide-org2dece03" data-transition="none">
+<h3 id="org2dece03">Neighbour:</h3>
+<p>
+[1,2,3,4,9,6,7,8,5,10,11,12]
+<img src="neighbour.png" alt="neighbour.png" />
+</p>
+</section>
+<section id="slide-org7d47882" data-transition="none">
+<h3 id="org7d47882">Original:</h3>
+<p>
+[1,2,3,4,5,6,7,8,9,10,11,12]
+<img src="optimal.png" alt="optimal.png" />
+</p>
+</section>
+<section id="slide-org6bba84d" data-transition="none">
+<h3 id="org6bba84d">Better neighbour:</h3>
+<p>
+[1,2,3,4,9,8,7,6,5,10,11,12]
+<img src="neighbour-reverse.png" alt="neighbour-reverse.png" />
+</p>
+</section>
+<section id="slide-org72d693e">
+<h3 id="org72d693e">Unused ideas</h3>
+<ul>
+<li class="fragment appear">Simulated annealing</li>
+<li class="fragment appear">Didn't need it</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org9164871">
+<h2 id="org9164871">Tools</h2>
+<ul>
+<li class="fragment appear">Python</li>
+<li class="fragment appear">Numpy</li>
+<li class="fragment appear">Pytest</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org451c604">
+<h2 id="org451c604">The program</h2>
+<div class="outline-text-2" id="text-org451c604">
+</div>
+</section>
+<section id="slide-org899647e">
+<h3 id="org899647e">Objective function</h3>
+<div class="org-src-container">
+
+<pre><code class="python" >def objective_function(order):
+    coordinates = [positions[n] for n in order]
+    leg_lengths = list(map(distance, coordinates[1:  ],
+                                     coordinates[ :-1]))
+    return int(floor(sum(np.cumsum(leg_lengths))))
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org8aeed26">
+<h3 id="org8aeed26">numpy.cumsum</h3>
+<pre  class="example">
+&gt;&gt;&gt; np.cumsum([1,  2,  3,  4,  5,  6,  7,  8,  9, 10])
+        array([1,  3,  6, 10, 15, 21, 28, 36, 45, 55])
+</pre>
+
+</section>
+<section id="slide-org32824f1">
+<h3 id="org32824f1">Tests</h3>
+<p>
+The organisers provided an Excel file demonstrating any
+calculation interactively. 
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orga930b83">
+<h2 id="orga930b83">Results</h2>
+<div class="outline-text-2" id="text-orga930b83">
+</div>
+</section>
+<section id="slide-org4d87e3d">
+<h3 id="org4d87e3d">Model answer</h3>
+<p>
+The pistes in numerical order: <code>212125</code>
+</p>
+</section>
+<section id="slide-org330b1d8">
+<h3 id="org330b1d8">Random search</h3>
+<p>
+149084
+</p>
+
+<p>
+141621
+</p>
+
+<p>
+134941
+</p>
+
+<p>
+(Computation time: a few hours)
+</p>
+</section>
+<section id="slide-org35590c8">
+<h3 id="org35590c8">Random hill climb</h3>
+<p>
+Initial neighbour definition:
+</p>
+
+<p>
+126544
+</p>
+
+<p>
+118341
+</p>
+
+<p>
+(Computation time: a few more hours)
+</p>
+</section>
+<section id="slide-org2cc9405">
+<h3 id="org2cc9405">Random hill climb</h3>
+<p>
+Better neighbour definition:
+</p>
+
+<p>
+87313
+</p>
+
+<p>
+71953
+</p>
+
+<p>
+(Computation time: a few minutes)
+</p>
+</section>
+<section id="slide-org812fd31">
+<h3 id="org812fd31">Manual optimization</h3>
+<ul>
+<li class="fragment appear">Looked at path of previous best</li>
+<li class="fragment appear">Optimized it by hand</li>
+
+</ul>
+</section>
+<section id="slide-orgdb87436" data-transition="none">
+<h3 id="orgdb87436">71953</h3>
+
+<div class="figure">
+<p><img src="hill_03_03d.png" alt="hill_03_03d.png" />
+</p>
+</div>
+</section>
+<section id="slide-org6b5408e" data-transition="none">
+<h3 id="org6b5408e">70613</h3>
+
+<div class="figure">
+<p><img src="hand_03_03a.png" alt="hand_03_03a.png" />
+</p>
+</div>
+</section>
+<section id="slide-org03355e9">
+<h3 id="org03355e9"></h3>
+<p>
+Computer found this whilst I was doing it.
+</p>
+</section>
+<section id="slide-org67d93df" data-transition="none">
+<h3 id="org67d93df">70613</h3>
+
+<div class="figure">
+<p><img src="hand_03_03a.png" alt="hand_03_03a.png" />
+</p>
+</div>
+</section>
+<section id="slide-org573fd85" data-transition="none">
+<h3 id="org573fd85">70406</h3>
+
+<div class="figure">
+<p><img src="hill_03_03e.png" alt="hill_03_03e.png" />
+</p>
+</div>
+</section>
+<section id="slide-orga1a7240">
+<h3 id="orga1a7240">Submit as answer</h3>
+<ul>
+<li class="fragment appear">Repeated simulations all gave this answer within minutes.</li>
+<li class="fragment appear">No improvement overnight.</li>
+<li class="fragment appear">Conclusion: this is (likely to be) the optimal answer!</li>
+
+</ul>
+</section>
+<section id="slide-org8fe6487">
+<h3 id="org8fe6487">Times</h3>
+
+<div class="figure">
+<p><img src="histogram.png" alt="histogram.png" />
+</p>
+</div>
+</section>
+<section id="slide-orgadea759">
+<h3 id="orgadea759">Conclusion</h3>
+<p>
+With this technique, the answer can regularly be found in under 3 minutes.
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org16c2f9c">
+<h2 id="org16c2f9c">Follow up</h2>
+<div class="outline-text-2" id="text-org16c2f9c">
+</div>
+</section>
+<section id="slide-orgeacb9ed">
+<h3 id="orgeacb9ed">Simulated annealing</h3>
+<ul>
+<li class="fragment appear">Other methods get stuck in local maxima.</li>
+<li class="fragment appear">SA avoids this.</li>
+
+</ul>
+</section>
+<section id="slide-orgacf5bcf">
+<h3 id="orgacf5bcf">Simulated annealing algorithm</h3>
+<ul>
+<li class="fragment appear">Start with a high temperature and a random path.</li>
+<li class="fragment appear">Pick a random neighbour.</li>
+<li class="fragment appear">Decide whether to keep it or not.</li>
+<li class="fragment appear">It is possible to keep a path <span class="underline">even though it is
+worse</span> (depending on the temperature).</li>
+<li class="fragment appear">Higher temperature = greater probability.</li>
+<li class="fragment appear">Gradually lower the temperature.</li>
+<li class="fragment appear">Stop when temperature = 0.</li>
+
+</ul>
+</section>
+<section id="slide-org47ac27d">
+<h3 id="org47ac27d">Problem with SA</h3>
+<ul>
+<li class="fragment appear">SA aims to find <b>good</b> solutions quickly.</li>
+<li class="fragment appear">This problem asks for the <b>best</b> solution.</li>
+<li class="fragment appear">So SA didn't work well in this context.</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgbcc5797">
+<h2 id="orgbcc5797">Available on GitHub</h2>
+<p>
+Slides:
+</p>
+
+<p>
+<a href="https://mdcge.github.io/SVOR/presentation/presentation.html">https://mdcge.github.io/SVOR/presentation/presentation.html</a>
+</p>
+
+<p>
+Code:
+</p>
+
+<p>
+<a href="https://github.com/mdcge/SVOR">https://github.com/mdcge/SVOR</a>
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: false,
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'slide', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }]
+});
+</script>
+</body>
+</html>
