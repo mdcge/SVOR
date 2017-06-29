@@ -120,24 +120,24 @@ Initial neighbour definition:
 :PROPERTIES:
 :reveal_data_transition: none
 :END:
-[[file:~/src/SVOR_competition/hill_03_03d.png]]
+[[file:hill_03_03d.png]]
 ** 70613
 :PROPERTIES:
 :reveal_data_transition: none
 :END:
-[[file:~/src/SVOR_competition/hand_03_03a.png]]
+[[file:hand_03_03a.png]]
 ** 
 Computer found this whilst I was doing it.
 ** 70613
 :PROPERTIES:
 :reveal_data_transition: none
 :END:
-[[file:~/src/SVOR_competition/hand_03_03a.png]]
+[[file:hand_03_03a.png]]
 ** 70406
 :PROPERTIES:
 :reveal_data_transition: none
 :END:
-[[file:~/src/SVOR_competition/hill_03_03e.png]]
+[[file:hill_03_03e.png]]
 ** Submit as answer
 #+ATTR_REVEAL: :frag (appear)
 + Repeated simulations all gave this answer within minutes.
