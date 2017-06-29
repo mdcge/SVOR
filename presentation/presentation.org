@@ -161,3 +161,10 @@ Computer found this whilst I was doing it.
 + Gradually lower the temperature.
 + Stop when temperature = 0.
 * Available on GitHub
+Slides:
+
+https://mdcge.github.io/SVOR/presentation/presentation.html
+
+Code:
+
+https://github.com/mdcge/SVOR
