@@ -167,11 +167,11 @@ With this technique, the answer can regularly be found in under 3 minutes.
 ** Simulated annealing algorithm
 #+ATTR_REVEAL: :frag (appear)
 + Start with a high temperature and a random path.
-+ Pick another path randomly.
++ Pick a random neighbour.
 + Decide whether to keep it or not.
 + It is possible to keep a path _even though it is
   worse_ (depending on the temperature).
-+ Higher temperature = greater tolerance.
++ Higher temperature = greater probability.
 + Gradually lower the temperature.
 + Stop when temperature = 0.
 ** Problem with SA
